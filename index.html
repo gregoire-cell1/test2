@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Talk2Stud - La plateforme moderne qui connecte lycéens et étudiants pour obtenir des informations transparentes sur les formations." />
+  <title>Talk2Stud - Modernité & Transparence</title>
+  <style>
+    :root {
+      --bg-dark: #0d0d0d;
+      --bg-deep: #1e1b4b;
+      --bg-violet: #3f3cbb;
+      --bg-glass: rgba(255, 255, 255, 0.05);
+      --border-glass: rgba(255, 255, 255, 0.1);
+      --text-main: #f3f3f3;
+      --text-muted: #b5b5b5;
+      --accent: #8b5cf6;
+      --hover-accent: #a78bfa;
+      --transition: 0.3s ease;
+      --shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg-dark);
+      color: var(--text-main);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      background: var(--bg-deep);
+      box-shadow: var(--shadow);
+      padding: 0.3rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .logo a {
+      font-size: 1.8rem;
+      font-weight: bold;
+      color: var(--accent);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .logo img {
+      height: 90px;
+      width: auto;
+      display: block;
+    }
+
+    .nav-links {
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      font-size: 1rem;
+      transition: color var(--transition);
+      text-decoration: none;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active {
+      color: var(--accent);
+    }
+
+    /* ===== SECTIONS ===== */
+    .page-section {
+      min-height: 100vh;
+      padding: 4rem 2rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity var(--transition), transform var(--transition);
+      display: none;
+    }
+
+    .active-section {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    .section-header h2 {
+      font-size: 2.5rem;
+      color: var(--accent);
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+    }
+
+    /* ===== HERO SECTION ===== */
+    .hero {
+      background: linear-gradient(135deg, var(--bg-dark), var(--bg-deep));
+      border-radius: 1.2rem;
+      padding: 4rem 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow);
+    }
+
+    .hero-content {
+      flex: 1 1 400px;
+      color: var(--text-main);
+    }
+
+    .hero-content h1 {
+      font-size: 3rem;
+      margin-bottom: 1rem;
+    }
+
+    .hero-content p {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      color: var(--text-muted);
+    }
+
+    .hero-media {
+      flex: 1 1 400px;
+      text-align: center;
+    }
+
+    .hero-media img {
+      max-width: 100%;
+      border-radius: 1rem;
+      box-shadow: var(--shadow);
+    }
+
+    /* ===== BOUTON PRINCIPAL ===== */
+    .btn-main {
+      background: linear-gradient(to right, var(--accent), var(--hover-accent));
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      border-radius: 2rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background var(--transition), transform var(--transition);
+      text-decoration: none;
+    }
+
+    .btn-main:hover {
+      transform: translateY(-2px);
+      background: linear-gradient(to right, var(--hover-accent), var(--accent));
+    }
+
+    /* ==== CARDS & FORMATIONS ===== */
+    .cards-grid {
+      display: grid;
+      gap: 2rem;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      padding: 0 1rem;
+    }
+
+    .card {
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      backdrop-filter: blur(12px);
+      border-radius: 1rem;
+      padding: 2rem;
+      box-shadow: var(--shadow);
+      transition: transform var(--transition), border-color var(--transition);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card h2 {
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: var(--text-main);
+    }
+
+    /* Bouton dans cartes */
+    .card button {
+      margin-top: 1rem;
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 1rem;
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+
+    .card button:hover {
+      background: var(--hover-accent);
+    }
+
+    /* ===== CONTACT FORM ===== */
+    .contact-form {
+      max-width: 600px;
+      margin: 0 auto;
+      background: var(--bg-glass);
+      border: 1px solid var(--border-glass);
+      padding: 2rem;
+      border-radius: 1rem;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+    }
+
+    .contact-form label {
+      display: block;
+      margin-bottom: 0.4rem;
+      color: var(--accent);
+    }
+
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 0.8rem;
+      margin-bottom: 1.2rem;
+      background: var(--bg-deep);
+      border: 1px solid var(--border-glass);
+      border-radius: 0.5rem;
+      color: var(--text-main);
+    }
+
+    .contact-confirmation {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 1.1rem;
+      color: var(--accent);
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #0a0a0a;
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-top: 4rem;
+    }
+
+    a {
+      text-decoration: none;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      body {
+        font-size: 14px;
+      }
+
+      .navbar {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .nav-links {
+        flex-direction: column;
+        align-items: center;
+        display: none;
+        gap: 1rem;
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .hero {
+        flex-direction: column;
+        text-align: center;
+        padding: 2rem 1rem;
+      }
+
+      .hero-content h1 {
+        font-size: 2rem;
+      }
+
+      .hero-content p {
+        font-size: 1rem;
+      }
+
+      .hero-media img {
+        max-width: 90%;
+      }
+
+      .section-header h2 {
+        font-size: 2rem;
+      }
+
+      .section-header p {
+        font-size: 1rem;
+      }
+
+      .cards-grid {\n        gap: 1rem;\n      }\n\n      .card {\n        padding: 1.2rem;\n      }\n\n      .contact-form {\n        padding: 1rem;\n        width: 90%;\n      }\n    }
+
+    /* ===== POPUP POUR "CONTACTER UN ÉTUDIANT" ===== */
+    #studentPopup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1500;
+      padding: 1rem;
+    }
+
+    #studentPopup.active {
+      display: flex;
+    }
+
+    #studentPopup .popup-content {
+      background: var(--bg-deep);
+      border-radius: 1rem;
+      padding: 2rem;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+
+    #studentPopup .close-popup {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background: transparent;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--accent);
+      cursor: pointer;
+    }
+
+    .student-contact-item {
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-glass);
+    }
+
+    .student-contact-item a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <header>
+    <nav class="navbar" role="navigation">
+      <div class="logo">
+        <a href="#home" data-page="home">
+          <img src="logo.png" alt="Talk2Stud Logo" />
+          Talk2Stud
+        </a>
+      </div>
+      <ul class="nav-links">
+        <li><a href="#home" data-page="home" class="nav-link active">Accueil</a></li>
+        <li><a href="#about" data-page="about" class="nav-link">À propos</a></li>
+        <li><a href="#features" data-page="features" class="nav-link">Fonctionnalités</a></li>
+        <li><a href="#formations" data-page="formations" class="nav-link">Formations</a></li>
+        <li><a href="#testimonials" data-page="testimonials" class="nav-link">Témoignages</a></li>
+        <li><a href="#contact" data-page="contact" class="nav-link">Contact</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- SECTION ACCUEIL -->
+  <section id="home" class="page-section active-section">
+    <div class="hero">
+      <div class="hero-content">
+        <h1>Bienvenue sur Talk2Stud</h1>
+        <p>La plateforme qui connecte lycéens et étudiants afin d'obtenir des retours d'expérience 100% transparents sur les formations.</p>
+        <a href="#formations" data-page="formations" class="btn-main">Explorer les formations</a>
+      </div>
+      <div class="hero-media">
+        <img src="https://vhugo.org/wp-content/uploads/2024/09/orientation.jpg" alt="Image impactante illustrant la plateforme" />
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION À PROPOS -->
+  <section id="about" class="page-section">
+    <div class="section-header">
+      <h2>À propos de Talk2Stud</h2>
+      <p>Notre mission : fournir une information claire et vérifiée sur les formations pour aider les lycéens à s'orienter et les étudiants à se réorienter.</p>
+    </div>
+    <div class="about-content">
+      <div class="about-item">
+        <h3>Transparence</h3>
+        <p>Des retours d’expériences réels d’étudiants pour une vision honnête des formations.</p>
+      </div>
+      <div class="about-item">
+        <h3>Accessibilité</h3>
+        <p>Une plateforme simple et intuitive, adaptée à tous les écrans.</p>
+      </div>
+      <div class="about-item">
+        <h3>Communauté</h3>
+        <p>Rejoignez une communauté dynamique d’étudiants et de lycéens engagés.</p>
+      </div>
+      <div class="about-item">
+        <h3>Stratégie Commerciale</h3>
+        <p>Des événements réguliers, comme “Les Lundis Sans Filtre”, et un onboarding personnalisé pour aider les utilisateurs à trouver leur voie.</p>
+      </div>
+      <div class="about-item">
+        <h3>Événements physiques</h3>
+        <p>Des journées “Talk2Stud” pour rencontrer des étudiants et participer à des ateliers pratiques.</p>
+      </div>
+      <div class="about-item">
+        <h3>Co-création</h3>
+        <p>Les utilisateurs influencent l’évolution de l’app grâce à des sondages et des retours d’expérience.</p>
+      </div>
+      <div class="about-item">
+        <h3>Accompagnement personnalisé</h3>
+        <p>Les étudiants peuvent être rémunérés et certifiés pour leur accompagnement, avec des avantages à la clé.</p>
+      </div>
+      <div class="about-item">
+        <h3>Fidélisation</h3>
+        <p>Un programme de fidélité et des événements exclusifs pour renforcer l’engagement sur le long terme.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION FONCTIONNALITÉS -->
+  <section id="features" class="page-section">
+    <div class="section-header">
+      <h2>Nos Fonctionnalités</h2>
+      <p>Les outils clés de Talk2Stud pour vous accompagner dans votre choix de formation.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <h3>Recherche Avancée</h3>
+        <p>Filtrez par domaine, localisation, coûts, débouchés et plus pour trouver la formation qui vous convient.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Détails Complets</h3>
+        <p>Accédez aux infos essentielles : durée, programme, frais, débouchés et avis d'étudiants.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Transparence Totale</h3>
+        <p>Lisez des avis vérifiés d'étudiants pour avoir une vue claire et réaliste des formations.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Accessible & Moderne</h3>
+        <p>Une interface fluide et responsive, pour une navigation facile sur tous vos appareils.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Live Interactifs</h3>
+        <p>Participez aux "Lundis Sans Filtre", des lives où des étudiants partagent leur expérience en direct.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Recommandations Personnalisées</h3>
+        <p>Un quiz pour découvrir les formations adaptées à vos intérêts et à votre projet de carrière.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Événements Physiques</h3>
+        <p>Assistez aux “Talk2Stud Days” pour rencontrer des étudiants et participer à des ateliers.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Accompagnement Personnel</h3>
+        <p>Des étudiants offrent un accompagnement pour la préparation aux concours et aux dossiers de candidature.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Système de Badges</h3>
+        <p>Gagnez des badges certifiant votre implication, avec des avantages exclusifs à la clé.</p>
+      </div>
+      <div class="feature-card">
+        <h3>Feedback en Temps Réel</h3>
+        <p>Notez les formations et partagez vos avis pour aider les autres à faire le bon choix.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION FORMATIONS -->
+  <section id="formations" class="page-section">
+    <div class="section-header">
+      <h2>Nos Formations</h2>
+      <p>Explorez notre catalogue détaillé de formations pour découvrir celle qui vous correspond.</p>
+      <div id="filters">
+        <input type="text" id="searchInput" placeholder="🔍 Rechercher une formation…" />
+      </div>
+    </div>
+    <div id="cardsContainer" class="cards-grid">
+      <!-- Les cartes de formations seront injectées via JavaScript -->
+    </div>
+  </section>
+
+  <!-- SECTION TÉMOIGNAGES -->
+  <section id="testimonials" class="page-section">
+    <div class="section-header">
+      <h2>Témoignages</h2>
+      <p>Découvrez ce que disent nos utilisateurs de leur expérience sur Talk2Stud.</p>
+    </div>
+    <div class="testimonials-slider">
+      <!-- Exemple de témoignages -->
+      <div class="testimonial-card">
+        <p>"Grâce à Talk2Stud, j'ai pu choisir la formation qui me correspond vraiment et éviter bien des écueils!"</p>
+        <h4>— Alex, lycéen</h4>
+      </div>
+      <div class="testimonial-card">
+        <p>"Les avis transparents m'ont permis de réorienter mon parcours et de prendre une décision en toute connaissance de cause."</p>
+        <h4>— Marie, étudiante</h4>
+      </div>
+      <div class="testimonial-card">
+        <p>"Une interface moderne et des informations fiables, je recommande vivement!"</p>
+        <h4>— Julien, étudiant</h4>
+      </div>
+      <!-- Dupliquer ou ajouter d'autres témoignages si nécessaire -->
+    </div>
+  </section>
+
+  <!-- SECTION CONTACT -->
+  <section id="contact" class="page-section">
+    <div class="section-header">
+      <h2>Contactez-nous</h2>
+      <p>Vous avez la moindre question ? Remplissez le formulaire ci-dessous et nous vous répondrons rapidement.</p>
+    </div>
+    <form id="contactForm" class="contact-form" aria-label="Formulaire de contact">
+      <div class="form-group">
+        <label for="name">Nom / Prénom</label>
+        <input type="text" id="name" placeholder="Votre nom" required />
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Votre email" required />
+      </div>
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" rows="5" placeholder="Votre message" required></textarea>
+      </div>
+      <button type="submit" class="btn-main">Envoyer le message</button>
+    </form>
+    <div id="contactConfirmation" class="contact-confirmation hidden">
+      <p>Merci pour votre message ! Nous reviendrons vers vous rapidement.</p>
+    </div>
+  </section>
+
+  <!-- Pied de page -->
+  <footer>
+    <p>&copy; 2025 Talk2Stud • Conçu par des étudiants, pour des étudiants.</p>
+  </footer>
+
+  <!-- POPUP POUR CONTACTER UN ÉTUDIANT -->
+  <div id="studentPopup">
+    <div class="popup-content">
+      <button class="close-popup" onclick="toggleStudentPopup(false)">&times;</button>
+      <h3>Contacter un étudiant</h3>
+      <div id="popupContent">
+        <!-- La liste des étudiants sera injectée ici -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== JAVASCRIPT ===== -->
+  <script>
+    // Données des formations (exemple)
+    const formations = [
+      {
+        id: "bts-commerce",
+        titre: "BTS Commerce",
+        description: "Une formation professionnalisante pour entrer rapidement sur le marché du travail."
+      },
+      {
+        id: "but-info",
+        titre: "BUT Informatique",
+        description: "Une formation en 3 ans axée sur la programmation, les réseaux et la gestion de projet."
+      }
+    ];
+
+    // Données des étudiants par formation
+    const formationEtudiants = {
+      "bts-commerce": [
+        {
+          prenom: "Amine",
+          reseau: "Instagram",
+          lien: "https://instagram.com/amine_bts",
+          description: "Étudiant en 2e année, disponible pour parler de son parcours."
+        },
+        {
+          prenom: "Sophie",
+          reseau: "LinkedIn",
+          lien: "https://linkedin.com/in/sophie-bts",
+          description: "Passionnée par le marketing, de STMG vers BTS."
+        }
+      ],
+      "but-info": [
+        {
+          prenom: "Léo",
+          reseau: "Discord",
+          lien: "https://discord.com/users/leo_info",
+          description: "Passionné de développement, dispo pour répondre à vos questions."
+        },
+        {
+          prenom: "Sara",
+          reseau: "LinkedIn",
+          lien: "https://linkedin.com/in/sara-butinfo",
+          description: "Actuelle étudiante en BUT Informatique, merci de me contacter !"
+        }
+      ]
+    };
+
+    // Injection des cartes de formation dans la section "Formations"
+    const cardsContainer = document.getElementById('cardsContainer');
+    formations.forEach(formation => {
+      const card = document.createElement('div');
+      card.classList.add('card');
+      card.innerHTML = `
+        <h2>${formation.titre}</h2>
+        <p>${formation.description}</p>
+        <button class="btn-contact-student" data-formation-id="${formation.id}">Contacter un étudiant</button>
+      `;
+      cardsContainer.appendChild(card);
+    });
+
+    // Gestionnaire d'événement pour le bouton "Contacter un étudiant"
+    document.querySelectorAll('.btn-contact-student').forEach(button => {
+      button.addEventListener('click', () => {
+        const formationId = button.getAttribute('data-formation-id');
+        const etudiants = formationEtudiants[formationId] || [];
+        const popupContent = document.getElementById('popupContent');
+        if (etudiants.length > 0) {
+          popupContent.innerHTML = etudiants.map(etu => `
+            <div class="student-contact-item">
+              <strong>${etu.prenom}</strong><br>
+              <small>${etu.description}</small><br>
+              <a href="${etu.lien}" target="_blank">${etu.reseau}</a>
+            </div>
+          `).join('');
+        } else {
+          popupContent.innerHTML = '<p>Aucun étudiant disponible pour cette formation.</p>';
+        }
+        toggleStudentPopup(true);
+      });
+    });
+
+    // Fonction pour afficher/masquer la pop-up
+    function toggleStudentPopup(show) {
+      const popup = document.getElementById('studentPopup');
+      if (show) {
+        popup.classList.add('active');
+      } else {
+        popup.classList.remove('active');
+      }
+    }
+
+    // (Optionnel) Gestion du champ de recherche dans les formations
+    document.getElementById('searchInput').addEventListener('input', event => {
+      const recherche = event.target.value.toLowerCase();
+      document.querySelectorAll('#cardsContainer .card').forEach(card => {
+        const titre = card.querySelector('h2').textContent.toLowerCase();
+        card.style.display = titre.indexOf(recherche) > -1 ? 'flex' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>
